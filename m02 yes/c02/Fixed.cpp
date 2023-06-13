@@ -9,7 +9,7 @@
     {
         this->setRawBits(frac);
     }
-    Fixed::Fixed(const float f_p) : fixed_point(f_p * (1 << num_fra))
+    Fixed::Fixed(const float f_p) : fixed_point(std::roundf((f_p * (1 << num_fra))))
     {
     }
     Fixed::Fixed(const Fixed & other)
@@ -45,7 +45,7 @@
      }
       int Fixed::toInt( void ) const
      {
-        return roundf(this->fixed_point >> num_fra);
+        return (this->fixed_point >> num_fra);
      }
      std::ostream & operator<<(std::ostream & stream, Fixed const & other) {
 	    stream << other.toFloat();
