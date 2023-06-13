@@ -5,9 +5,9 @@
         // std::cout <<"Default constructor called"<<std::endl;
         this->fixed_point = 0;
     }
-    Fixed::Fixed(const int frac) 
+    Fixed::Fixed(const int frac) : fixed_point(frac<<num_fra)
     {
-        this->setRawBits(frac);
+        
     }
     Fixed::Fixed(const float f_p) : fixed_point(std::roundf((f_p * (1 << num_fra))))
     {
@@ -35,7 +35,7 @@
     
      void Fixed::setRawBits( int const raw )
      {
-        this->fixed_point = raw << num_fra;
+        this->fixed_point = raw;
      }
 
      float Fixed::toFloat( void ) const
