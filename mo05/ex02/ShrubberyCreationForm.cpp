@@ -33,30 +33,16 @@ void ShrubberyCreationForm::execute(Bureaucrat const & executor) const
     if(outputFile.is_open())
     {
     
-        outputFile << "                      ___" << std::endl;
-        outputFile << "                _,-'\"\"   \"\"\"\"`--." << std::endl;
-        outputFile << "             ,-'          __,,-- \\" << std::endl;
-        outputFile << "           ,\'    __,--\"\"\"\"dF      )" << std::endl;
-        outputFile << "          /   .-\"Hb_,--\"\"dF      /" << std::endl;
-        outputFile << "        ,\'       _Hb ___dF\"-._,-'" << std::endl;
-        outputFile << "      ,'      _,-\"\"\"\"   \"\"--..__" << std::endl;
-        outputFile << "     (     ,-'                  `." << std::endl;
-        outputFile << "      `._,'     _   _             ;" << std::endl;
-        outputFile << "       ,'     ,' `-'Hb-.___..._,-'" << std::endl;
-        outputFile << "       \\    ,'\"Hb.-\'HH`-.dHF\"" << std::endl;
-        outputFile << "        `--\'   \"Hb  HH  dF\"" << std::endl;
-        outputFile << "                \"Hb HH dF" << std::endl;
-        outputFile << "                 \"HbHHdF" << std::endl;
-        outputFile << "                  |HHHF" << std::endl;
-        outputFile << "                  |HHH|" << std::endl;
-        outputFile << "                  |HHH|" << std::endl;
-        outputFile << "                  |HHH|" << std::endl;
-        outputFile << "                  |HHH|" << std::endl;
-        outputFile << "                  dHHHb" << std::endl;
-        outputFile << "                .dFd|bHb.               o" << std::endl;
-        outputFile << "      o       .dHFdH|HbTHb.          o /" << std::endl;
-        outputFile << "\\  Y  |  \\__,dHHFdHH|HHhoHHb.__Krogg  Y" << std::endl;
-        outputFile << "##########################################" << std::endl;
+        outputFile << "            /\\          " << std::endl;
+        outputFile << "           /\\*\\          " << std::endl;
+        outputFile << "          /\\O\\*\\          " << std::endl;
+        outputFile << "         /*/\\/\\/\\       " << std::endl;
+        outputFile << "        /\\O\\/\\*\\/\\           " << std::endl;
+        outputFile << "       /\\*\\/\\*\\/\\/\\        " << std::endl;
+        outputFile << "      /\\O\\/\\/*/\\/O/\\        " << std::endl;
+        outputFile << "            ||        " << std::endl;
+        outputFile << "            ||        " << std::endl;
+        outputFile << "            ||        " << std::endl;
         outputFile.close();
     }
     }

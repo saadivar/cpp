@@ -11,7 +11,7 @@ int main( void )
         std::cout << e.what() << std::endl;
     }
 	try {
-        Bureaucrat bureaucrat("adam", 150);
+        Bureaucrat bureaucrat("adam", 149);
 		bureaucrat.decrement();
         std::cout << bureaucrat << std::endl;
     } catch (Bureaucrat::GradeTooLowException &e) {

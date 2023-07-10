@@ -51,7 +51,7 @@ int Form::get_exgrade()const
 
 void Form::beSigned(const Bureaucrat &bu)
 {
-    if(bu.getGrade() < this->get_signgrade())
+    if(bu.getGrade() > this->get_signgrade())
         throw Form::GradeTooLowException();
     this->sign = true;
 }
