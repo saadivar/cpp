@@ -3,11 +3,12 @@
 
 AForm::AForm() : name("saad") ,  re_grade_si(1) , re_grade_ex(1)
 {
-    
+    sign = false;
 }
 
 AForm::AForm(std::string name, int regrade,int exgrade) :name(name) ,  re_grade_si(regrade) , re_grade_ex(exgrade)
 {
+    sign = false;
     if(re_grade_si < 1)
         throw AForm::GradeTooHighException();
     else if(re_grade_si > 150)
@@ -20,7 +21,7 @@ AForm::AForm(std::string name, int regrade,int exgrade) :name(name) ,  re_grade_
 
 
 AForm::AForm(const AForm& bu) : name(bu.getname()),re_grade_si(bu.get_signgrade()) , re_grade_ex(bu.get_exgrade()){
-    
+    sign = bu.getsign();
 }
 AForm& AForm::operator=(const AForm& bu)
 {

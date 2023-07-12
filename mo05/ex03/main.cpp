@@ -12,8 +12,10 @@ int main( void )
     Intern someRandomIntern;
     AForm* rrf;
     rrf = someRandomIntern.makeForm("robotomy request", "Bender");
+    delete(rrf);
     Intern someRandomIntern1;
     AForm* rrf1;
     rrf1 = someRandomIntern1.makeForm("jajja", "saaad");
+    delete(rrf1);
     return 0;
 }

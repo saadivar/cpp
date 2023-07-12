@@ -28,9 +28,14 @@ AForm *Intern::makeForm(std::string f_name,std::string target)
         if(forms[i] == f_name)
         {
             std::cout << "Intern creates " << forms[i] <<std::endl;
+            for(int j = 0;j  <3 ;j++)
+                if(j != i)
+                    delete(ptr[j]);
             return ptr[i];
         }
     }
     std::cout << "this " << f_name <<" form does not exist"<<std::endl;
+    for(int j = 0;j  <3 ;j++)
+        delete(ptr[j]);
     return NULL;
 }
