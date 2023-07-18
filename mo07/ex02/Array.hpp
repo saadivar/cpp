@@ -9,38 +9,35 @@ class Array
         T* elem;
         unsigned int len;
     public:
-        Array() : elem(new T()),len(0)
-        {
-        }
-        ~Array()
-        {
+        Array() : elem(new T()),len(0) { }
+        ~Array() {
             delete [] this->elem;
         }
-        Array(unsigned int n): elem(new T[n]),len(n)
+        Array(unsigned int n): elem(new T[n]()),len(n)
         {}
         Array(const Array& a)
         {
-            this->elem = new T(a.len);
+            this->elem = new T[a.len]();
             this->len = a.len;
-            for(int i = 0;i < a.len;i++)
+            for(unsigned int i = 0;i < a.len;i++)
                 this->elem[i] = a.elem[i];
         }
         Array& operator=(const Array& a)
         {
             delete [] this->elem;
-            this->elem = new T(a.len);
+            this->elem = new T[a.len]();
             this->len = a.len;
-            for(int i = 0;i < a.len;i++)
+            for(unsigned int i = 0;i < a.len;i++)
                 this->elem[i] = a.elem[i];
             return *this;
         }
-        T& operator[](unsigned int indx)
+        T& operator[](unsigned int indx) const
         {
             if(indx >= this->len)
                 throw over();
             return elem[indx];
         }
-        int size()
+        int size() const 
         {
             return this->len;
         }
