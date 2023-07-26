@@ -1,5 +1,11 @@
 #include "BitcoinExchange.hpp"
 
+
+float str_to_float(const std::string& str) {
+    float result;
+    std::sscanf(str.c_str(), "%f", &result);
+    return result;
+}
 int white_spaces(std::string str) {
     for (size_t i = 0; i < str.length(); i++) {
         if (!std::isspace(str[i])) {
@@ -87,7 +93,7 @@ int checkingvalue(std::string value)
         if(!std::isdigit(value[i]) && !std::isspace(value[i])  && value[i] != '.' && value[i] != '-' && value[i] != '+')
             return 3;
     }
-    val = stof(value);
+    val = str_to_float(value);
     if(val > 1000.0)
         return 2;
     else if(val < 0.0 )
@@ -96,15 +102,19 @@ int checkingvalue(std::string value)
 }
 float bitcoin(std::map<std::string ,float>data ,std::string key,std::string value)
 {
-    float val = stof(value);
+    float val = str_to_float(value);
     
     std::map<std::string ,float>::iterator it ;
+    std::map<std::string ,float>::iterator it1 = data.begin() ;
     it = data.lower_bound(key.substr(0,10 ));
     if(it->first == key.substr(0,10 ))
         return(it->second * val);
     else
     {
-        it--;
+        if(it->first == it1->first)
+            return(it->second * val);
+        else
+            it--;
         return(it->second * val);
     }
 }
@@ -128,7 +138,7 @@ std::map<std::string ,float> reading(std::string filename)
                 {
                     continue;
                 }    
-                value = stof(line.substr(comma + 1));
+                value = str_to_float(line.substr(comma + 1));
                 data1[key] = value;
             }
             
@@ -141,6 +151,7 @@ std::map<std::string ,float> reading(std::string filename)
     {
         
         std::ifstream file(filename);
+        std::ifstream check(filename);
         std::string line;
         std::string skip;
         std::string error;
@@ -153,11 +164,23 @@ std::map<std::string ,float> reading(std::string filename)
             std::cout << "Error args." << std::endl;
             return ;
         }
+        //////////////
+        check.seekg(0, std::ios::end); // Move to the end of the file
+        std::streampos fileSize = check.tellg(); // Get the current position (file size)
+        if (fileSize == 0) {
+            std::cout << "The file is empty." << std::endl;
+            return ;
+        }
+        check.close();
+        ///////////////
         std::getline(file,skip);
         while(white_spaces(skip))
-        {
             std::getline(file,skip);
-        }
+        if(skip.find('|') ==  std::string::npos)
+        {
+            std::cout << "first line not as date | value." << std::endl;
+            return ;
+        }    
         while(std::getline(file,line))
         {
             if(white_spaces(line))
