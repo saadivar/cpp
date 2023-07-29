@@ -126,11 +126,12 @@ std::map<std::string ,float> reading(std::string filename)
         std::string skip;
         std::string key;
         float value;
+        size_t comma;
         std::getline(file,skip);
         
         while(std::getline(file,line))
         {
-            size_t comma = line.find(',');
+            comma = line.find(',');
             if(comma != std::string::npos)
             {
                 key = line.substr(0 ,comma);
@@ -153,34 +154,42 @@ std::map<std::string ,float> reading(std::string filename)
         std::ifstream file(filename);
         std::ifstream check(filename);
         std::string line;
-        std::string skip;
+        std::string empty;
         std::string error;
         std::string value;
         std::string key;
         size_t pipe;
         float results;
-        int s;
+        int checker;
         if (!file) {
             std::cout << "Error args." << std::endl;
             return ;
         }
-        //////////////
-        check.seekg(0, std::ios::end); // Move to the end of the file
-        std::streampos fileSize = check.tellg(); // Get the current position (file size)
-        if (fileSize == 0) {
-            std::cout << "The file is empty." << std::endl;
+        std::getline(check,empty,'\0');
+        if(empty.length() == 0)
+        {
+             std::cout << "The file is empty." << std::endl;
             return ;
         }
         check.close();
-        ///////////////
-        std::getline(file,skip);
-        while(white_spaces(skip))
-            std::getline(file,skip);
-        if(skip.find('|') ==  std::string::npos)
+        std::getline(file,line);
+        while(white_spaces(line))
+            std::getline(file,line);
+        size_t k = line.find('|');
+        if(k ==  std::string::npos)
         {
-            std::cout << "first line not as date | value." << std::endl;
+            std::cout << "first line not as date | value header ." << std::endl;
             return ;
-        }    
+        }
+        else
+        {
+            line = line.substr(k + 1);
+            if(line.find('|') !=  std::string::npos)
+            {
+                std::cout << "there is more than date | value input ." << std::endl;
+                return ;
+            }
+        }
         while(std::getline(file,line))
         {
             if(white_spaces(line))
@@ -191,19 +200,18 @@ std::map<std::string ,float> reading(std::string filename)
                 key = line.substr(0 ,pipe);
                 if(checkingkey(key) == 1)
                 {
-                    error = "Error: bad input";
-                    std::cout << error << "=> " <<key<<std::endl;
+                    std::cout << "Error: bad input " << "=> " <<key<<std::endl;
                     continue;
                 }
                 value = line.substr(pipe + 1);
-                s = checkingvalue(value);
-                if(s)
+                checker = checkingvalue(value);
+                if(checker)
                 {
-                    if(s == 1)
+                    if(checker == 1)
                         error = "Error: not a positive number.";
-                    else if(s == 2)
+                    else if(checker == 2)
                         error = "Error: too large a number.";
-                    else if(s == 3)
+                    else if(checker == 3)
                         error = "Error: bad input";
                     std::cout << error <<std::endl;
                     continue;
