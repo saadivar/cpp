@@ -13,7 +13,7 @@ int check_operation(char c)
 }
 int check_less_ten(char *s)
 {
-    if (!check_operation(s[1]) && !isspace(s[1]))
+    if (!check_operation(s[1]) && !std::isspace(s[1]))
         return 0;
     return 1;
 }
@@ -43,11 +43,11 @@ int rpn(char *s)
     int second;
     while (s[i])
     {
-        while (isspace(s[i]))
+        while (std::isspace(s[i]))
             i++;
         if (s[i] == '\0')
             break;
-        if (isdigit(s[i]))
+        if (std::isdigit(s[i]))
         {
             if (check_less_ten(s + i))
                 rpn.push(convertToInt(s[i]));

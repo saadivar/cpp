@@ -1,6 +1,5 @@
 #include "BitcoinExchange.hpp"
 
-
 float str_to_float(const std::string& str) {
     float result;
     std::sscanf(str.c_str(), "%f", &result);
@@ -77,26 +76,59 @@ int checkingkey(std::string key)
     return 0;
 
 }
-int checkingvalue(std::string value)
+int containing(std::string value)
 {
-    float val = 0.0;
+    for(size_t i = 0; i < value.length() ; i++)
+    {
+        if(std::isdigit(value[i]))
+            return 1;
+    }
+    return 0;
+}
+int check_points(std::string value)
+{
+    int count = 0;
+    for(size_t i = 0; i < value.length() ; i++)
+    {
+        if( value[i] == '.')
+        {
+            count++;
+            if(!std::isdigit(value[i+ 1]))
+                return 0;
+        }
+    }
+    if(count > 1)
+        return 0;
+    return 1;
+}
+int value_mustbe_nb(std::string value)
+{
     int flag = 0;
     for(size_t i = 0; i < value.length() ; i++)
     {
-        if(std::isdigit(value[i]) && flag==0)
+        if((std::isdigit(value[i]) ||value[i] == '-' || value[i] == '+') && flag==0)
             flag =1;
         else if((!std::isdigit(value[i])&& value[i] != '.') && flag== 1)
-            return 3;
+            flag =2;
+        else if(!std::isspace(value[i]) && flag== 2)
+            return 0;
     }
     for(size_t i = 0; i < value.length() ; i++)
     {
         if(!std::isdigit(value[i]) && !std::isspace(value[i])  && value[i] != '.' && value[i] != '-' && value[i] != '+')
-            return 3;
+            return 0;
     }
+    return 1;
+}
+int checkingvalue(std::string value)
+{
+    if(!value_mustbe_nb(value)||!containing(value) || !check_points(value))
+        return 3;
+    float val = 0.0;
     val = str_to_float(value);
-    if(val > 1000.0)
+    if(val > 1000)
         return 2;
-    else if(val < 0.0 )
+    else if(val < 0 )
         return 1;
     return 0;
 }
@@ -120,13 +152,15 @@ float bitcoin(std::map<std::string ,float>data ,std::string key,std::string valu
 }
 std::map<std::string ,float> reading(std::string filename)
     {
-        std::map<std::string , float> data1 ;
+        std::map<std::string , float> data ;
         std::ifstream file(filename);
         std::string line;
         std::string skip;
         std::string key;
         float value;
         size_t comma;
+        if (!file)
+            throw invalid_csv();
         std::getline(file,skip);
         
         while(std::getline(file,line))
@@ -135,19 +169,22 @@ std::map<std::string ,float> reading(std::string filename)
             if(comma != std::string::npos)
             {
                 key = line.substr(0 ,comma);
-                if(checkingkey(key) == 1)
-                {
-                    continue;
-                }    
                 value = str_to_float(line.substr(comma + 1));
-                data1[key] = value;
+                data[key] = value;
             }
             
         }
         file.close();
-        return data1;
+        return data;
     }
-    
+    int first_line(std::string str)
+    {
+        for (size_t i = 0; i < str.length(); i++) {
+            if (std::isdigit(str[i])) 
+                return 0;
+        }
+        return 1;
+    } 
     void converting(std::string filename,std::map<std::string ,float>data )
     {
         
@@ -176,7 +213,7 @@ std::map<std::string ,float> reading(std::string filename)
         while(white_spaces(line))
             std::getline(file,line);
         size_t k = line.find('|');
-        if(k ==  std::string::npos)
+        if(k ==  std::string::npos || !first_line(line))
         {
             std::cout << "first line not as date | value header ." << std::endl;
             return ;
